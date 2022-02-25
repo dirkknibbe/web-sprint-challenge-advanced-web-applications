@@ -77,7 +77,6 @@ export default function App() {
     axiosWithAuth()
       .get(articlesUrl)
       .then((res) => {
-        console.log(res);
         setArticles(res.data.articles);
         setMessage(res.data.message);
       })
@@ -86,7 +85,7 @@ export default function App() {
         if (err.response.status === 401) {
           redirectToLogin();
         } else {
-          debugger;
+          console.log(err);
         }
       })
       .finally(() => {
@@ -99,6 +98,8 @@ export default function App() {
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
+    setMessage("");
+    setSpinnerOn(true);
     axiosWithAuth()
       .post(articlesUrl, article)
       .then((res) => {
@@ -111,17 +112,62 @@ export default function App() {
         } else {
           debugger;
         }
-        debugger;
+      })
+      .finally(() => {
+        setSpinnerOn(false);
       });
   };
 
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
+    console.log(article_id);
+    setMessage("");
+    setSpinnerOn(true);
+    axiosWithAuth()
+      .put(`${articlesUrl}/${article_id}`, article)
+      .then((res) => {
+        setArticles(
+          articles.map((art) => {
+            return art.id == article_id ? res.data.article : art;
+          })
+        );
+        setCurrentArticleId();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setSpinnerOn(false);
+      });
   };
 
   const deleteArticle = (article_id) => {
+    console.log(article_id);
     // ✨ implement
+    setMessage("");
+    setSpinnerOn(true);
+    axiosWithAuth()
+      .delete(`${articlesUrl}/${article_id}`)
+      .then((res) => {
+        setArticles(
+          articles.filter((art) => {
+            return art.article_id !== article_id;
+          })
+        );
+        setMessage(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          redirectToLogin();
+        } else {
+          console.log(err);
+        }
+      })
+      .finally(() => {
+        setSpinnerOn(false);
+      });
   };
 
   return (
