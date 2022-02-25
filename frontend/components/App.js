@@ -77,11 +77,13 @@ export default function App() {
     axiosWithAuth()
       .get(articlesUrl)
       .then((res) => {
+        console.log(res);
         setArticles(res.data.articles);
         setMessage(res.data.message);
       })
       .catch((err) => {
-        if (err.response.status == 401) {
+        console.log(err);
+        if (err.response.status === 401) {
           redirectToLogin();
         } else {
           debugger;
@@ -97,6 +99,20 @@ export default function App() {
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
+    axiosWithAuth()
+      .post(articlesUrl, article)
+      .then((res) => {
+        setArticles(articles.concat(res.data.article));
+      })
+      .catch((err) => {
+        // if err.response.status == 401, navigate to login...
+        if (err.response.status === 401) {
+          redirectToLogin();
+        } else {
+          debugger;
+        }
+        debugger;
+      });
   };
 
   const updateArticle = ({ article_id, article }) => {
@@ -111,7 +127,7 @@ export default function App() {
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <React.StrictMode>
-      <Spinner />
+      <Spinner on={spinnerOn} />
       <Message message={message} />
       <button id="logout" onClick={logout}>
         Logout from app
@@ -138,8 +154,16 @@ export default function App() {
                   article={articles.find((art) => {
                     return art.id == currentArticleId;
                   })}
+                  setCurrentArticleId={setCurrentArticleId}
+                  postArticle={postArticle}
+                  updateArticle={updateArticle}
                 />
-                <Articles articles={articles} getArticles={getArticles} />
+                <Articles
+                  articles={articles}
+                  getArticles={getArticles}
+                  setCurrentArticleId={setCurrentArticleId}
+                  deleteArticle={deleteArticle}
+                />
               </>
             }
           />
