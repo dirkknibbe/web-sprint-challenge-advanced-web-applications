@@ -81,8 +81,7 @@ export default function App() {
         setMessage(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
+        if (err.response.data.status === 401) {
           redirectToLogin();
         } else {
           console.log(err);
@@ -107,11 +106,10 @@ export default function App() {
         setMessage(res.data.message);
       })
       .catch((err) => {
-        // if err.response.status == 401, navigate to login...
-        if (err.data.status === 401) {
-          console.log(err);
+        if (err.response.data.status === 401) {
+          redirectToLogin();
         } else {
-          debugger;
+          console.log(err);
         }
       })
       .finally(() => {
@@ -137,7 +135,11 @@ export default function App() {
         setCurrentArticleId();
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.data.status === 401) {
+          redirectToLogin();
+        } else {
+          console.log(err);
+        }
       })
       .finally(() => {
         setSpinnerOn(false);
@@ -160,8 +162,7 @@ export default function App() {
         setMessage(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
+        if (err.response.data.status === 401) {
           redirectToLogin();
         } else {
           console.log(err);
