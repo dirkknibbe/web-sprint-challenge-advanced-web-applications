@@ -198,7 +198,7 @@ export default function App() {
               <>
                 <ArticleForm
                   article={articles.find((art) => {
-                    return art.id == currentArticleId;
+                    return art.article_id == currentArticleId;
                   })}
                   setCurrentArticleId={setCurrentArticleId}
                   postArticle={postArticle}

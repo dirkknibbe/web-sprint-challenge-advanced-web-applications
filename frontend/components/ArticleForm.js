@@ -32,7 +32,10 @@ export default function ArticleForm(props) {
     // depending on the truthyness of the `currentArticle` prop.
 
     if (article) {
-      updateArticle({ article_id: article.article_id, article: values });
+      updateArticle({
+        article_id: article.article_id,
+        article: values,
+      });
     } else {
       postArticle(values);
     }
