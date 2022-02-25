@@ -108,8 +108,8 @@ export default function App() {
       })
       .catch((err) => {
         // if err.response.status == 401, navigate to login...
-        if (err.response.status === 401) {
-          redirectToLogin();
+        if (err.data.status === 401) {
+          console.log(err);
         } else {
           debugger;
         }
@@ -202,9 +202,9 @@ export default function App() {
                   article={articles.find((art) => {
                     return art.article_id == currentArticleId;
                   })}
-                  setCurrentArticleId={setCurrentArticleId}
                   postArticle={postArticle}
                   updateArticle={updateArticle}
+                  setCurrentArticleId={setCurrentArticleId}
                 />
                 <Articles
                   articles={articles}
