@@ -104,6 +104,7 @@ export default function App() {
       .post(articlesUrl, article)
       .then((res) => {
         setArticles(articles.concat(res.data.article));
+        setMessage(res.data.message);
       })
       .catch((err) => {
         // if err.response.status == 401, navigate to login...
@@ -129,9 +130,10 @@ export default function App() {
       .then((res) => {
         setArticles(
           articles.map((art) => {
-            return art.id == article_id ? res.data.article : art;
+            return art.article_id == article_id ? res.data.article : art;
           })
         );
+        setMessage(res.data.message);
         setCurrentArticleId();
       })
       .catch((err) => {
